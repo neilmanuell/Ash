@@ -99,25 +99,45 @@ package ash.fsm
 			assertThat( entity.get( MockComponent ), sameInstance( component1 ) );
 		}
 
-		[Test]
-		public function enterSecondStateRemovesDifferentComponentsOfSameType() : void
-		{
-			var state1 : EntityState = new EntityState();
-			var component1 : MockComponent = new MockComponent();
-			state1.add( MockComponent ).withInstance( component1 );
-			fsm.addState( "test1", state1 );
-			fsm.changeState( "test1" );
+        [Test]
+        public function enterSecondStateRemovesDifferentComponentsOfSameType() : void
+        {
+            var state1 : EntityState = new EntityState();
+            var component1 : MockComponent = new MockComponent();
+            state1.add( MockComponent ).withInstance( component1 );
+            fsm.addState( "test1", state1 );
+            fsm.changeState( "test1" );
 
-			var state2 : EntityState = new EntityState();
-			var component3 : MockComponent = new MockComponent();
-			var component2 : MockComponent2 = new MockComponent2();
-			state2.add( MockComponent ).withInstance( component3 );
-			state2.add( MockComponent2 ).withInstance( component2 );
-			fsm.addState( "test2", state2 );
-			fsm.changeState( "test2" );
+            var state2 : EntityState = new EntityState();
+            var component3 : MockComponent = new MockComponent();
+            var component2 : MockComponent2 = new MockComponent2();
+            state2.add( MockComponent ).withInstance( component3 );
+            state2.add( MockComponent2 ).withInstance( component2 );
+            fsm.addState( "test2", state2 );
+            fsm.changeState( "test2" );
 
-			assertThat( entity.get( MockComponent ), sameInstance( component3 ) );
-		}
+            assertThat( entity.get( MockComponent ), sameInstance( component3 ) );
+        }
+
+        [Test]
+        public function retainInhibitsRemovalOfSpecifiedProviderClass() : void
+        {
+            var state1 : EntityState = new EntityState();
+            var component1 : MockComponent = new MockComponent();
+            state1.add( MockComponent ).withInstance( component1 );
+            fsm.addState( "test1", state1 );
+            fsm.changeState( "test1" );
+
+            var state2 : EntityState = new EntityState();
+            var component2 : MockComponent2 = new MockComponent2();
+
+            state2.add( MockComponent2 ).withInstance( component2 );
+            state2.retain(MockComponent)
+            fsm.addState( "test2", state2 );
+            fsm.changeState( "test2" );
+
+            assertThat( entity.get( MockComponent ), sameInstance( component1 ) );
+        }
 
 		private static function failIfCalled( ...args ) : void
 		{

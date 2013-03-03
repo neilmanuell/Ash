@@ -91,7 +91,7 @@ package ash.fsm
 					type = Class( t );
 					var other : IComponentProvider = toAdd[ type ];
 
-					if ( other && other.identifier == currentState.providers[ type ].identifier )
+					if ( newState.retainedProviders[t] || other && other.identifier == currentState.providers[ type ].identifier )
 					{
 						delete toAdd[ type ];
 					}
