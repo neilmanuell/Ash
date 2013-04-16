@@ -112,5 +112,10 @@ package ash.fsm
 			}
 			currentState = newState;
 		}
-	}
+
+        public function add( type:Class ):EntityComponentMapping
+        {
+            return new EntityComponentMapping(entity, type);
+        }
+    }
 }
