@@ -56,6 +56,7 @@ package ash.core
 			{
 				family.newEntity( entity );
 			}
+            entity.added.dispatch( entity );
 		}
 		
 		/**
@@ -72,6 +73,7 @@ package ash.core
 				family.removeEntity( entity );
 			}
 			entityList.remove( entity );
+            entity.removed.dispatch( entity );
 		}
 		
 		/**

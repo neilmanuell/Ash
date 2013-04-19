@@ -4,8 +4,10 @@ package ash.core
 	import org.hamcrest.assertThat;
 	import org.hamcrest.collection.hasItems;
 	import org.hamcrest.object.equalTo;
+import org.hamcrest.object.isTrue;
+import org.hamcrest.object.sameInstance;
 
-	public class EngineTests
+public class EngineTests
 	{
 		private var engine : Engine;
 		
@@ -112,13 +114,44 @@ package ash.core
 			assertThat( MockFamily.instances[0].newEntityCalls, equalTo( 2 ) );
 		}
 
-		[Test]
-		public function releaseNodeListCallsCleanUp() : void
-		{
-			engine.getNodeList( MockNode );
-			engine.releaseNodeList( MockNode );
-			assertThat( MockFamily.instances[0].cleanUpCalls, equalTo( 1 ) );
-		}
+        [Test]
+        public function releaseNodeListCallsCleanUp() : void
+        {
+            engine.getNodeList( MockNode );
+            engine.releaseNodeList( MockNode );
+            assertThat( MockFamily.instances[0].cleanUpCalls, equalTo( 1 ) );
+        }
+
+    [Test]
+    public function addedSignalDispatchedWhenEntityAddedToEngine() : void
+    {
+        var entityAdded:Entity;
+        const entity:Entity = new Entity();
+        const onAdded:Function = function( e:Entity):void
+        {
+            entityAdded = e;
+        }
+        entity.added.add( onAdded );
+        engine.addEntity( entity );
+
+        assertThat( entityAdded, sameInstance( entity ) );
+    }
+
+    [Test]
+    public function removedSignalDispatchedWhenEntityRemovedFromEngine() : void
+    {
+        var entityRemoved:Entity;
+        const entity:Entity = new Entity();
+        const onRemoved:Function = function( e:Entity):void
+        {
+            entityRemoved = e;
+        }
+        entity.removed.add( onRemoved );
+        engine.addEntity( entity );
+        engine.removeEntity( entity );
+
+        assertThat( entityRemoved, sameInstance( entity ) );
+    }
 	}
 }
 import ash.core.Entity;

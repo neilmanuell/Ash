@@ -1,6 +1,8 @@
 package ash.core
 {
-	import ash.signals.Signal2;
+import ash.signals.Signal0;
+import ash.signals.Signal1;
+import ash.signals.Signal2;
 	import flash.utils.Dictionary;
 	import flash.utils.describeType;
 
@@ -36,6 +38,14 @@ package ash.core
 		 * This signal is dispatched when a component is removed from the entity.
 		 */
 		public var componentRemoved : Signal2;
+        /**
+         * This signal is dispatched when the entity is added to the engine.
+         */
+        public var added : Signal1;
+        /**
+         * This signal is dispatched when the entity is added to the engine.
+         */
+        public var removed : Signal1;
 		
 		internal var previous : Entity;
 		internal var next : Entity;
@@ -43,8 +53,12 @@ package ash.core
 
 		public function Entity()
 		{
-			componentAdded = new Signal2( Entity, Class );
-			componentRemoved = new Signal2( Entity, Class );
+            componentAdded = new Signal2( Entity, Class );
+            componentRemoved = new Signal2( Entity, Class );
+
+            added = new Signal1( Entity );
+            removed = new Signal1( Entity );
+
 			components = new Dictionary();
 		}
 
